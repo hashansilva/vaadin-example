@@ -1,20 +1,20 @@
 package com.freelancer.hashan.model;
 
-public class Person {
-    private Integer id;
+public class Country {
+    private String code;
     private String name;
 
-    public Person(Integer id, String name) {
-        this.id = id;
+    public Country(String code, String name) {
+        this.code = code;
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public String getCode() {
+        return code;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

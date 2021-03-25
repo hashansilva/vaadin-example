@@ -1,6 +1,9 @@
 package com.freelancer.hashan;
 
-import com.freelancer.hashan.model.Person;
+import com.freelancer.hashan.model.Country;
+import com.freelancer.hashan.soap.ws.client.generated.CountryInfoService;
+import com.freelancer.hashan.soap.ws.client.generated.CountryInfoServiceSoapType;
+import com.freelancer.hashan.soap.ws.client.generated.TCountryCodeAndName;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
@@ -16,18 +19,22 @@ import java.util.List;
 @Route
 public class MainView extends VerticalLayout {
 
-    private List<Person> personList = new ArrayList<>();
+    private List<Country> countries = new ArrayList<>();
 
     public MainView() {
         Button button = new Button("Click me",
                 event -> Notification.show("Clicked!"));
 
-        for (int i = 0; i <= 1000; i++) {
-            personList.add(new Person(i, "Test" + i));
-        }
+        CountryInfoService countryInfoService = new CountryInfoService();
+        CountryInfoServiceSoapType countryInfoServiceSoapType = countryInfoService.getCountryInfoServiceSoap();
 
-        Grid<Person> grid = new Grid<>(Person.class);
-        grid.setItems(personList);
+        List<TCountryCodeAndName> countryList = countryInfoServiceSoapType.listOfCountryNamesByCode().getTCountryCodeAndName();
+        countryList.forEach(country -> {
+            countries.add(new Country(country.getSISOCode(), country.getSName()));
+        });
+
+        Grid<Country> grid = new Grid<>(Country.class);
+        grid.setItems(countries);
 
         add(button);
         add(grid);
